@@ -1,3 +1,4 @@
+import 'package:flash_chat/components/child_loading_row.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   String email = "";
   String password = "";
+  String errorMassage = "";
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,31 +64,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
             const SizedBox(
-              height: 24.0,
+              height: 10.0,
+            ),
+            Text(errorMassage),
+            const SizedBox(
+              height: 10.0,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: CustomElevatedButton(
                 onPressed: () async {
                   try {
+                    if (_isLoading) return;
+                    setState(() => _isLoading = true);
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
+                    Navigator.pushNamed(context, ChatScreen.id);
 
-                    // ignore: unnecessary_null_comparison
-                    if (newUser != null) {
-                      Navigator.pushNamed(context, ChatScreen.id);
-                    }
+                    setState(() => _isLoading = false);
                   } catch (e) {
                     print(e);
                   }
                 },
                 primaryColorHexCode: 0xFF448AFF,
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                child: _isLoading
+                    ? const ChildLoadingRow()
+                    : const Text('Register', style: kTextStyle),
               ),
               // ),
             ),
