@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "928797370402",
-    "project_id": "flash-chat-cc5d5",
-    "storage_bucket": "flash-chat-cc5d5.appspot.com"
+    "project_number": "943257034165",
+    "project_id": "flash-chat-520e1",
+    "storage_bucket": "flash-chat-520e1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928797370402:android:335a282ea02bb79ebec27b",
+        "mobilesdk_app_id": "1:943257034165:android:3206ad214e2332a1138dfc",
         "android_client_info": {
-          "package_name": "rahul.flash_chat"
+          "package_name": "rahulkr.flash_chat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "928797370402-47au64h86ji760acloajlsnkbt940n5s.apps.googleusercontent.com",
+          "client_id": "943257034165-uu5sk15g0gfqulecifv0jla1ape9qltd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgQSE87Kn3DpEkdTSCvnmBO4wNrMuvxRg"
+          "current_key": "AIzaSyANx0VdSOLQsxIluASEz_83OuKfe0glZk8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "928797370402-47au64h86ji760acloajlsnkbt940n5s.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:928797370402:android:5a872c93aaa08618bec27b",
-        "android_client_info": {
-          "package_name": "rahul.kumar.flash_chat"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "928797370402-47au64h86ji760acloajlsnkbt940n5s.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDgQSE87Kn3DpEkdTSCvnmBO4wNrMuvxRg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "928797370402-47au64h86ji760acloajlsnkbt940n5s.apps.googleusercontent.com",
+              "client_id": "943257034165-uu5sk15g0gfqulecifv0jla1ape9qltd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

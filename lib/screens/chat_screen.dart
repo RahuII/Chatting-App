@@ -23,6 +23,29 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
+  void getMessages() async {
+    final messages = _firestore.collection('messages');
+    var querySnapshot = await messages.get();
+    for (var massage in querySnapshot.docs) {
+      print(massage.data());
+    }
+    // for (var queryDocumentSnapshot in querySnapshot.docs) {
+    //   Map<String, dynamic> data = queryDocumentSnapshot.data();
+    //   var name = data['text'];
+    //   var phone = data['sender'];
+    //   print(name);
+    //   print(phone);
+    // }
+  }
+
+  void messageStream() async {
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var massage in snapshot.docs) {
+        print(massage.data());
+      }
+    }
+  }
+
   void getCurrentUser() async {
     // ignore: await_only_futures
     final user = await _auth.currentUser;
@@ -40,8 +63,10 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
+                // getMessages();
+                messageStream();
+                // _auth.signOut();
+                // Navigator.pop(context);
               }),
         ],
         title: const Text('⚡️Chat'),
@@ -52,6 +77,31 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.lightBlueAccent,
+                    ),
+                  );
+                }
+                final messages = snapshot.data!.docs;
+                List<Text> messageWidgets = [];
+                for (var message in messages) {
+                  final messageSender = message.get('sender');
+                  final messageText = message.get('text');
+
+                  final messageWidget =
+                      Text('$messageText from $messageSender');
+                  messageWidgets.add(messageWidget);
+                }
+                return Column(
+                  children: messageWidgets,
+                );
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -69,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       _firestore.collection('messages').add({
                         'text': messagesText,
-                        'email': loggedInUser.email,
+                        'sender': loggedInUser.email,
                       });
                     },
                     child: const Text(
