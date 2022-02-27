@@ -51,11 +51,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           children: <Widget>[
             Row(
               children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    child: Image.asset('images/logo.png'),
-                    height: 60,
+                Flexible(
+                  child: Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      child: Image.asset('images/logo.png'),
+                      height: 60,
+                    ),
                   ),
                 ),
                 DefaultTextStyle(
