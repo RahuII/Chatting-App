@@ -17,7 +17,25 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
-  String messagesText = "";
+  String messageText = "Hello";
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentVoid();
+  }
+
+  void getCurrentVoid() async {
+    try {
+      // ignore: await_only_futures
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: messageTextController,
                       onChanged: (value) {
-                        messagesText = value;
+                        messageText = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
@@ -59,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       messageTextController.clear();
                       _firestore.collection('messages').add({
-                        'text': messagesText,
+                        'text': messageText,
                         'sender': loggedInUser.email,
                       });
                     },
@@ -100,21 +118,18 @@ class MessagesStream extends StatelessWidget {
           );
         }
         final messages = snapshot.data!.docs.reversed;
-        List<MassageBubble> messageBubble = [];
+        List<MessageBubble> messageBubble = [];
         for (var message in messages) {
           final messageSender = message.get('sender');
           final messageText = message.get('text');
           final currentUser = loggedInUser.email;
-          bool isMe = false;
 
-          if (currentUser == messageSender) {
-            isMe = true;
-          }
+          if (currentUser == messageSender) {}
 
-          final messageWidget = MassageBubble(
-            sender: messageSender,
+          final messageWidget = MessageBubble(
             text: messageText,
-            isMe: isMe,
+            sender: messageSender,
+            isMe: currentUser == messageSender,
           );
 
           messageBubble.add(messageWidget);
@@ -134,8 +149,8 @@ class MessagesStream extends StatelessWidget {
   }
 }
 
-class MassageBubble extends StatelessWidget {
-  const MassageBubble({
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({
     Key? key,
     required this.sender,
     required this.text,

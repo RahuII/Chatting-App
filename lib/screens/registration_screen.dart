@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flash_chat/components/child_loading_row.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
@@ -79,6 +81,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   try {
                     if (_isLoading) return;
                     setState(() => _isLoading = true);
+                    // ignore: unused_local_variable
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
                     Navigator.pushNamed(context, ChatScreen.id);
