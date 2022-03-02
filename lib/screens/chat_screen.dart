@@ -22,10 +22,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentVoid();
+    getCurrentUser();
   }
 
-  void getCurrentVoid() async {
+  void getCurrentUser() async {
     try {
       // ignore: await_only_futures
       final user = await _auth.currentUser;
