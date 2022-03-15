@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 final _auth = FirebaseAuth.instance;
 final _firestore = FirebaseFirestore.instance;
@@ -33,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -79,6 +80,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       _firestore.collection('messages').add({
                         'text': messageText,
                         'sender': loggedInUser.email,
+                        'date': DateFormat("dd-MM-yyyy-hh:mm:ss a")
+                            .format(DateTime.now()),
                       });
                     },
                     child: const Text(
@@ -122,6 +125,7 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageSender = message.get('sender');
           final messageText = message.get('text');
+          final messageDateTime = message.get('date');
           final currentUser = loggedInUser.email;
 
           if (currentUser == messageSender) {}
@@ -130,6 +134,7 @@ class MessagesStream extends StatelessWidget {
             text: messageText,
             sender: messageSender,
             isMe: currentUser == messageSender,
+            time: messageDateTime.substring(11, 16),
           );
 
           messageBubble.add(messageWidget);
@@ -155,10 +160,12 @@ class MessageBubble extends StatelessWidget {
     required this.sender,
     required this.text,
     required this.isMe,
+    required this.time,
   }) : super(key: key);
 
   final String sender;
   final String text;
+  final String time;
   final bool isMe;
   @override
   Widget build(BuildContext context) {
@@ -177,7 +184,8 @@ class MessageBubble extends StatelessWidget {
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                    bottomRight: Radius.circular(5.0),
                   )
                 : const BorderRadius.only(
                     topRight: Radius.circular(20.0),
@@ -188,11 +196,28 @@ class MessageBubble extends StatelessWidget {
             color: isMe ? Colors.lightBlueAccent : Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: isMe ? Colors.white : Colors.black,
-                  fontSize: 15,
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 200),
+                child: Wrap(
+                  alignment: WrapAlignment.end,
+                  crossAxisAlignment: WrapCrossAlignment.end,
+                  children: [
+                    Text(
+                      text,
+                      style: TextStyle(
+                        color: isMe ? Colors.white : Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        time,
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -74,13 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     try {
                       if (_isLoading) return;
                       setState(() => _isLoading = true);
+                      // ignore: unused_local_variable
                       final user = await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
 
                       Navigator.pushNamed(context, ChatScreen.id);
                       setState(() => _isLoading = false);
                     } catch (e) {
-                      print(e);
+                      // print(e);
                     }
                   },
                   primaryColorHexCode: 0xFF40C4FF,
