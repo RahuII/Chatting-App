@@ -131,7 +131,7 @@ class MessagesStream extends StatelessWidget {
           final messageDateTime = message.get('date');
           final currentUser = loggedInUser.email;
 
-          if (currentUser == messageSender) {}
+          // if (currentUser == messageSender) {}
 
           final messageWidget = MessageBubble(
             text: messageText,
@@ -179,7 +179,7 @@ class MessageBubble extends StatelessWidget {
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            sender,
+            sender.substring(0, sender.length - 10),
             style: const TextStyle(fontSize: 12, color: Colors.black54),
           ),
           Material(
@@ -192,6 +192,7 @@ class MessageBubble extends StatelessWidget {
                   )
                 : const BorderRadius.only(
                     topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(5.0),
                     bottomLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0),
                   ),
